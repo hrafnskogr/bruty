@@ -12,3 +12,4 @@ Password entropy calculator:
 
 Entropass computes entropy with this formula: H(K)=Log2(K) 
 Where K is the keyspace size (automatically evaluated for each password).
+Accepts piped source (eg: cat rockyou.txt | entropass)
