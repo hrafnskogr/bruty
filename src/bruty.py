@@ -70,7 +70,7 @@ def main(argv):
 
 	# we wait a little while we pool enough passwords in our queue
 	print("Pooling", end="")
-	for i in range(0, 3):
+	for i in range(0, 4):
 		print(".", end="")
 		sys.stdout.flush()
 		time.sleep(1)
@@ -99,7 +99,7 @@ def main(argv):
 	avr_measures = 0				# for stat: compute global average of requests per second
 
 	total_time = 0
-	limitedRun = True if _args.runtime else False
+	limitedRun = True if _args.runtime > 0 else False
 
 	# main loop
 	while not _exit:
@@ -151,28 +151,29 @@ def requestor_http(qPass, qRes, qUser, target, counter, end, head, t_out, wId):
 
 	while True:
 		try:
-			if(not retry):
-				counter.value += 1
-				passwd = qPass.get(timeout=1)
+		#	if(not retry):
+			counter.value += 1
+			passwd = qPass.get(timeout=1)
 			
 			bAuth = (qUser, passwd)
 			
 			if(head):
-				res = _session.head(target, auth=bAuth, timeout=t_out)
+				res = _session.head(target, auth=bAuth) #, timeout=t_out)
 			else:
-				res = _session.get(target, auth=bAuth, timeout=t_out)
+				res = _session.get(target, auth=bAuth) #, timeout=t_out)
 
 			if(res.status_code == 200):
 				qRes.put("Valid pair: u:{} | p:{}".format(qUser, passwd))
 			
 			#counter.value += 1
-			retry = False
+		#	retry = False
 
-		except requests.exceptions.ReadTimeout:
-			print("Timeout reach, consider increasing timeout value")
-			retry = True
+		#except requests.exceptions.ReadTimeout:
+		#	print("Timeout reach, consider increasing timeout value")
+		#	retry = True
 
 		except queue.Empty:
+			#print("Queue empty")
 			noPass_miss += 1
 			if(noPass_miss > noPass_max):
 				break
