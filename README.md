@@ -2,6 +2,7 @@
 Multiprocessing brute-forcer:
 - HTTP BasicAuth (either GET or HEAD requests)
 - SSH
+- GPG
 - Permutation or dictionary
 
 # Entropass (in tools)
