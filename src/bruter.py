@@ -9,6 +9,16 @@ class brutor(object):
 		self.generator = itertools.product(self.seed, repeat=self.low_bound)
 		self.depleted = False
 		self.infinite = True if c_max < 0 else False
+	
+	def get_keyspace_size(self):
+		if(self.infinite):
+			return -1
+
+		total = 0
+		for i in range(self.low_bound, self.high_bound + 1):
+			total += len(self.seed)**i
+
+		return total
 
 	def reinit(self):
 		self.low_bound += 1
